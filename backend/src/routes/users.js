@@ -52,6 +52,31 @@ router.post("/", async (req, res) => {
 });
 
 /**
+ * Login a user.
+ * @route POST /users/login
+ * @param {string} username.body.required - User's username
+ * @param {string} password.body.required - User's password
+ * @returns {User} - User object with ID and username
+ */
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await knex("users").where({ email }).first();
+
+  if (!user) {
+    return res.status(401).json({ error: "Invalid username" });
+  }
+
+  const passwordMatch = await bcrypt.compare(password, user.password);
+
+  if (!passwordMatch) {
+    return res.status(401).json({ error: "Invalid password" });
+  }
+
+  res.json({ id: user.id, email: user.email });
+});
+
+/**
  * Delete a user by ID.
  * @route DELETE /users/{id}
  * @param {string} id.path - User ID (UUID)

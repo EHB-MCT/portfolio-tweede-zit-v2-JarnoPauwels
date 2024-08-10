@@ -52,6 +52,45 @@ describe("Users API", () => {
     });
   });
 
+  describe("POST /users/login", () => {
+    it("should log in a user with valid credentials", async () => {
+      // const existingUser = await knex("users").first();
+      const credentials = {
+        email: "testuser",
+        password: "testpassword",
+      };
+      const response = await request(app)
+        .post("/users/login")
+        .send(credentials);
+      expect(response.status).toBe(200);
+      expect(response.body).toBeInstanceOf(Object);
+      expect(response.body.email).toBe(credentials.email);
+    });
+
+    it("should return 401 for invalid email", async () => {
+      const credentials = {
+        email: "nonexistentuser",
+        password: "testpassword",
+      };
+      const response = await request(app)
+        .post("/users/login")
+        .send(credentials);
+      expect(response.status).toBe(401);
+    });
+
+    it("should return 401 for invalid password", async () => {
+      // const existingUser = await knex("users").first();
+      const credentials = {
+        email: "testuser",
+        password: "wrongpassword",
+      };
+      const response = await request(app)
+        .post("/users/login")
+        .send(credentials);
+      expect(response.status).toBe(401);
+    });
+  });
+
   describe("DELETE /users/:id", () => {
     it("should delete a user by ID", async () => {
       const existingUser = await knex("users")

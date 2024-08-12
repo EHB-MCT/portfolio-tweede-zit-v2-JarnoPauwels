@@ -6,6 +6,12 @@ import { TextField, Button, Typography, Box } from "@mui/material";
 const Login = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleRegisterClick = () => {
+    navigate("/register");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,14 +19,20 @@ const Login = ({ onLoginSuccess }) => {
     try {
       const apiUrl = "http://localhost:3000/users/login";
       const response = await axios.post(apiUrl, { email, password });
+      console.log(response);
       if (response) {
         localStorage.setItem("userId", response.data.id);
         onLoginSuccess();
+        navigate("/");
       } else {
         setError("Incorrect email or password");
       }
     } catch (error) {
-      console.error("There was an error logging in the user!", error);
+      console.error(
+        "There was an error logging in the user!",
+        error.response.data
+      );
+      setError(error.response.data.error);
     }
   };
 
@@ -48,8 +60,16 @@ const Login = ({ onLoginSuccess }) => {
         onChange={(e) => setPassword(e.target.value)}
         sx={{ mb: 2 }}
       />
+      {error && (
+        <Typography color="error" sx={{ mb: 2 }}>
+          {error}
+        </Typography>
+      )}
       <Button type="submit" variant="contained" color="primary">
         Login
+      </Button>
+      <Button variant="contained" color="primary" onClick={handleRegisterClick}>
+        Register
       </Button>
     </Box>
   );

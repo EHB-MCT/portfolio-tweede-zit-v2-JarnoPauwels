@@ -1,35 +1,81 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import { Container, CssBaseline, useTheme } from "@mui/material";
+import Register from "./components/Register";
+import Login from "./components/Login";
+import { fetchUserData } from "./service/dataService";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+        setLoggedIn(true);
+        await fetchUser(userId);
+      } else {
+        setLoggedIn(false);
+        setIsLoading(false);
+      }
+    };
+
+    checkLoggedIn();
+  }, []);
+
+  const handleLoginSuccess = async () => {
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      setLoggedIn(true);
+      await fetchUser(userId);
+    }
+  };
+
+  const fetchUser = async (userId) => {
+    try {
+      const userData = await fetchUserData(userId);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Router>
+      <Container
+        sx={{
+          p: 4,
+          minHeight: "100vh",
+        }}
+      >
+        <Routes>
+          {!loggedIn ? (
+            <>
+              <Route path="/register" element={<Register />} />
+              <Route
+                path="/login"
+                element={<Login onLoginSuccess={handleLoginSuccess} />}
+              />
+              <Route path="*" element={<Navigate to="/login" replace />} />
+            </>
+          ) : (
+            <></>
+          )}
+        </Routes>
+      </Container>
+    </Router>
+  );
 }
 
-export default App
+export default App;

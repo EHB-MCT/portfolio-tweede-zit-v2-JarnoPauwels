@@ -39,6 +39,12 @@ const LogoutButton = styled(Button)({
   marginBottom: "16px",
 });
 
+const AdminButton = styled(Button)({
+  width: "100%",
+  marginBottom: "16px",
+  fontSize: "13px",
+});
+
 const Header = ({ lightModeImageUrl, darkModeImageUrl, title, isAdmin }) => {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -52,8 +58,22 @@ const Header = ({ lightModeImageUrl, darkModeImageUrl, title, isAdmin }) => {
     navigate("/");
   };
 
+  const handleAdminClick = () => {
+    navigate("/admin");
+  };
+
   return (
     <HeaderContainer>
+      {isAdmin && (
+        <AdminButton
+          variant="contained"
+          color="primary"
+          onClick={handleAdminClick}
+        >
+          Admin Dashboard
+        </AdminButton>
+      )}
+
       <Logo
         src={
           theme.palette.mode === "dark" ? darkModeImageUrl : lightModeImageUrl

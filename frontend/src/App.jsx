@@ -6,13 +6,18 @@ import {
   Navigate,
 } from "react-router-dom";
 import { Container, CssBaseline, useTheme } from "@mui/material";
+import HeaderVertical from "./components/HeaderVertical";
 import Register from "./components/Register";
 import Login from "./components/Login";
+import Questions from "./components/Questions";
 import { fetchUserData } from "./service/dataService";
+import lightLogo from "./assets/EhB-logo-transparant.png";
+import darkLogo from "./assets/EhB logo rood en wit.png";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
     const checkLoggedIn = async () => {
@@ -53,8 +58,16 @@ function App() {
 
   return (
     <Router>
+      <CssBaseline />
+      <HeaderVertical
+        lightModeImageUrl={lightLogo}
+        darkModeImageUrl={darkLogo}
+        title="Forum"
+        isAdmin={userRole === "admin"}
+      />
       <Container
         sx={{
+          ml: "240px",
           p: 4,
           minHeight: "100vh",
         }}
@@ -70,7 +83,9 @@ function App() {
               <Route path="*" element={<Navigate to="/login" replace />} />
             </>
           ) : (
-            <></>
+            <>
+              <Route path="/" element={<Questions />} />
+            </>
           )}
         </Routes>
       </Container>

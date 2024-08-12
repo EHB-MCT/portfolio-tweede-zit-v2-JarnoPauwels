@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 import {
   TextField,
   Button,
@@ -19,6 +21,11 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("student");
   const [emailError, setEmailError] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate("/login");
+  };
 
   const validateEmail = () => {
     // Regex to validate email ending with @student.ehb.be
@@ -50,64 +57,104 @@ const Register = () => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Register
-      </Typography>
-      <TextField
-        label="First Name"
-        variant="outlined"
-        fullWidth
-        required
-        value={firstName}
-        onChange={(e) => setFirstname(e.target.value)}
-        sx={{ mb: 2 }}
-      />
-      <TextField
-        label="Last Name"
-        variant="outlined"
-        fullWidth
-        required
-        value={lastName}
-        onChange={(e) => setLastname(e.target.value)}
-        sx={{ mb: 2 }}
-      />
-      <TextField
-        label="Email"
-        variant="outlined"
-        fullWidth
-        required
-        value={email}
-        onChange={(e) => {
-          setEmail(e.target.value);
-          setEmailError(false); // Reset email error on input change
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh", // Center vertically
+      }}
+    >
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          width: "100%",
+          maxWidth: "400px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
-        error={emailError}
-        helperText={
-          emailError ? "Please enter a valid @student.ehb.be email" : ""
-        }
-        sx={{ mb: 2 }}
-      />
-      <TextField
-        label="Password"
-        variant="outlined"
-        fullWidth
-        required
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        sx={{ mb: 2 }}
-      />
-      <FormControl fullWidth sx={{ mb: 2 }}>
-        <InputLabel>Role</InputLabel>
-        <Select value={role} onChange={(e) => setRole(e.target.value)}>
-          <MenuItem value="student">Student</MenuItem>
-          <MenuItem value="teacher">Teacher</MenuItem>
-        </Select>
-      </FormControl>
-      <Button type="submit" variant="contained" color="primary">
-        Register
-      </Button>
+      >
+        <Typography
+          variant="h4"
+          component="h1"
+          gutterBottom
+          sx={{ alignSelf: "flex-start" }}
+        >
+          Register
+        </Typography>
+        <TextField
+          label="First Name"
+          variant="outlined"
+          fullWidth
+          required
+          value={firstName}
+          onChange={(e) => setFirstname(e.target.value)}
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          label="Last Name"
+          variant="outlined"
+          fullWidth
+          required
+          value={lastName}
+          onChange={(e) => setLastname(e.target.value)}
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          label="Email"
+          variant="outlined"
+          fullWidth
+          required
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setEmailError(false); // Reset email error on input change
+          }}
+          error={emailError}
+          helperText={
+            emailError ? "Please enter a valid @student.ehb.be email" : ""
+          }
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          label="Password"
+          variant="outlined"
+          fullWidth
+          required
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          sx={{ mb: 2 }}
+        />
+        <FormControl fullWidth sx={{ mb: 2 }}>
+          <InputLabel>Role</InputLabel>
+          <Select value={role} onChange={(e) => setRole(e.target.value)}>
+            <MenuItem value="student">Student</MenuItem>
+            <MenuItem value="teacher">Teacher</MenuItem>
+          </Select>
+        </FormControl>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            width: "100%",
+          }}
+        >
+          <Button type="submit" variant="contained" color="primary">
+            Register
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleLoginClick}
+          >
+            Login
+          </Button>
+        </Box>
+      </Box>
     </Box>
   );
 };

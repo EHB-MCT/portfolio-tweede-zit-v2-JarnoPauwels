@@ -37,40 +37,77 @@ const Login = ({ onLoginSuccess }) => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Login
-      </Typography>
-      <TextField
-        label="Email"
-        variant="outlined"
-        fullWidth
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        sx={{ mb: 2 }}
-      />
-      <TextField
-        label="Password"
-        variant="outlined"
-        fullWidth
-        required
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        sx={{ mb: 2 }}
-      />
-      {error && (
-        <Typography color="error" sx={{ mb: 2 }}>
-          {error}
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+      }}
+    >
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          width: "100%",
+          maxWidth: "400px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography
+          variant="h4"
+          component="h1"
+          gutterBottom
+          sx={{ alignSelf: "flex-start" }}
+        >
+          Login
         </Typography>
-      )}
-      <Button type="submit" variant="contained" color="primary">
-        Login
-      </Button>
-      <Button variant="contained" color="primary" onClick={handleRegisterClick}>
-        Register
-      </Button>
+        <TextField
+          label="Email"
+          variant="outlined"
+          fullWidth
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          label="Password"
+          variant="outlined"
+          fullWidth
+          required
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          sx={{ mb: 2 }}
+        />
+        {error && (
+          <Typography color="error" sx={{ mb: 2 }}>
+            {error}
+          </Typography>
+        )}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            width: "100%",
+          }}
+        >
+          <Button type="submit" variant="contained" color="primary">
+            Login
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleRegisterClick}
+          >
+            Register
+          </Button>
+        </Box>
+      </Box>
     </Box>
   );
 };

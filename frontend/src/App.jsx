@@ -10,6 +10,7 @@ import HeaderVertical from "./components/HeaderVertical";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Questions from "./components/Questions";
+import QuestionDetail from "./components/QuestionDetail";
 import { fetchUserData } from "./service/dataService";
 import lightLogo from "./assets/EhB-logo-transparant.png";
 import darkLogo from "./assets/EhB logo rood en wit.png";
@@ -95,6 +96,10 @@ function App() {
             ) : (
               <>
                 <Route path="/" element={<Questions />} />
+                <Route
+                  path="/question/:questionId"
+                  element={<QuestionDetail />}
+                />
               </>
             )}
           </Routes>

@@ -5,7 +5,7 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import { Container, CssBaseline, useTheme } from "@mui/material";
+import { CssBaseline, Box } from "@mui/material";
 import HeaderVertical from "./components/HeaderVertical";
 import Register from "./components/Register";
 import Login from "./components/Login";
@@ -59,36 +59,47 @@ function App() {
   return (
     <Router>
       <CssBaseline />
-      <HeaderVertical
-        lightModeImageUrl={lightLogo}
-        darkModeImageUrl={darkLogo}
-        title="Forum"
-        isAdmin={userRole === "admin"}
-      />
-      <Container
-        sx={{
-          ml: "240px",
-          p: 4,
-          minHeight: "100vh",
-        }}
-      >
-        <Routes>
-          {!loggedIn ? (
-            <>
-              <Route path="/register" element={<Register />} />
-              <Route
-                path="/login"
-                element={<Login onLoginSuccess={handleLoginSuccess} />}
-              />
-              <Route path="*" element={<Navigate to="/login" replace />} />
-            </>
-          ) : (
-            <>
-              <Route path="/" element={<Questions />} />
-            </>
-          )}
-        </Routes>
-      </Container>
+      <Box sx={{ display: "flex", minHeight: "100vh" }}>
+        <Box
+          sx={{
+            width: "11vw",
+            minWidth: "11vw",
+            position: "relative",
+          }}
+        >
+          <HeaderVertical
+            lightModeImageUrl={lightLogo}
+            darkModeImageUrl={darkLogo}
+            title="Forum"
+            isAdmin={userRole === "admin"}
+          />
+        </Box>
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            // width: "89vw",
+            p: 4,
+          }}
+        >
+          <Routes>
+            {!loggedIn ? (
+              <>
+                <Route path="/register" element={<Register />} />
+                <Route
+                  path="/login"
+                  element={<Login onLoginSuccess={handleLoginSuccess} />}
+                />
+                <Route path="*" element={<Navigate to="/login" replace />} />
+              </>
+            ) : (
+              <>
+                <Route path="/" element={<Questions />} />
+              </>
+            )}
+          </Routes>
+        </Box>
+      </Box>
     </Router>
   );
 }

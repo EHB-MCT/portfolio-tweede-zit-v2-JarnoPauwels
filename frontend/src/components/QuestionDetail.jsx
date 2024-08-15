@@ -21,6 +21,7 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import { getRoleColor, getRoleIcon } from "../utils/roleUtils";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CheckIcon from "@mui/icons-material/Check";
 
 const QuestionDetail = () => {
   const { questionId } = useParams();
@@ -35,8 +36,15 @@ const QuestionDetail = () => {
       // console.log(questionData);
       setQuestion(questionData);
 
-      const answerData = await fetchAnswersForQuestion(questionId);
-      // console.log(answerData);
+      let answerData = await fetchAnswersForQuestion(questionId);
+      console.log(answerData);
+
+      answerData = answerData.sort((a, b) => {
+        if (a.isCorrectAnswer && !b.isCorrectAnswer) return -1;
+        if (!a.isCorrectAnswer && b.isCorrectAnswer) return 1;
+        return 0;
+      });
+
       setAnswers(answerData);
     } catch (error) {
       console.error("There was an error fetching the question!", error);
@@ -151,6 +159,9 @@ const QuestionDetail = () => {
                         addSuffix: true,
                       })}
                     </Typography>
+                    {answer.isCorrectAnswer && (
+                      <CheckIcon sx={{ justifyContent: "flex-end" }} />
+                    )}
                   </Box>
                   <Box>
                     <Typography>{answer.content}</Typography>

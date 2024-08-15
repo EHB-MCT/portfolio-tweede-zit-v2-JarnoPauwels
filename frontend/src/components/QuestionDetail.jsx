@@ -63,6 +63,36 @@ const QuestionDetail = () => {
 
   return (
     <Box sx={{ width: "100%" }}>
+      <IconButton
+        color="primary"
+        onClick={() => navigate("/")}
+        sx={{
+          mb: 2,
+          position: "relative",
+          "&:hover": {
+            "& .MuiTypography-root": {
+              opacity: 1,
+              transform: "translateX(40px)",
+            },
+          },
+        }}
+        aria-label="back to questions"
+      >
+        <ArrowBackIcon />
+        <Typography
+          variant="body1"
+          sx={{
+            fontWeight: "bold",
+            position: "absolute",
+            width: "200px",
+            left: "-20px",
+            opacity: 0,
+            transition: "opacity 0.3s ease, transform 0.3s ease",
+          }}
+        >
+          Back to Questions
+        </Typography>
+      </IconButton>
       <Card variant="outlined">
         <CardContent>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>

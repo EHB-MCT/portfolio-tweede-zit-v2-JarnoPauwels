@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { TextField, Button, Typography, Box } from "@mui/material";
-import { postQuestion } from "../service/dataService";
 
 const NewQuestion = ({ onSuccess }) => {
   const [title, setTitle] = useState("");

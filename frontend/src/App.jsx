@@ -79,7 +79,7 @@ function App() {
           component="main"
           sx={{
             flexGrow: 1,
-            // width: "89vw",
+            width: "89vw",
             p: 4,
           }}
         >

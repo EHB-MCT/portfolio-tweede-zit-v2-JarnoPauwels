@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   fetchQuestionById,
   fetchAnswersForQuestion,
+  postAnswer,
 } from "../service/dataService";
 import {
   Box,
@@ -46,14 +47,22 @@ const QuestionDetail = () => {
     fetchQuestion();
   }, [questionId]);
 
-  const handlePostAnswer = async () => {};
+  const handlePostAnswer = async () => {
+    try {
+      await postAnswer(question.id, newAnswerContent);
+      setNewAnswerContent("");
+      fetchQuestion();
+    } catch (error) {
+      console.error("Error posting answer:", error);
+    }
+  };
 
   if (!question) {
     return <div>Loading...</div>;
   }
 
   return (
-    <Box sx={{ minWidth: "100%", marginBottom: 2 }}>
+    <Box sx={{ width: "100%" }}>
       <Card variant="outlined">
         <CardContent>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -73,18 +82,31 @@ const QuestionDetail = () => {
               addSuffix: true,
             })}
           </Typography>
-          <Typography variant="h2" color="text.primary" gutterBottom>
+          <Typography variant="h3" color="text.primary" gutterBottom>
             {question.title}
           </Typography>
           <Typography variant="body1">{question.content}</Typography>
         </CardContent>
+
         <CardContent>
           <Typography variant="h6">Answers:</Typography>
           {answers.map((answer) => (
-            <Box key={answer.id} sx={{ mb: 1 }}>
-              <Card variant="outlined">
+            <Box key={answer.id}>
+              <Card
+                variant="outlined"
+                sx={{
+                  marginBottom: 1,
+                }}
+              >
                 <CardContent>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      marginBottom: 1,
+                    }}
+                  >
                     <Typography variant="h6" color="text.secondary">
                       {answer.user.firstName} {answer.user.lastName}
                     </Typography>
@@ -94,22 +116,21 @@ const QuestionDetail = () => {
                       size="small"
                       color={getRoleColor(answer.user.role)}
                     />
+                    <Typography variant="body2" color="text.secondary">
+                      {formatDistanceToNow(new Date(answer.created_at), {
+                        addSuffix: true,
+                      })}
+                    </Typography>
                   </Box>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    gutterBottom
-                  >
-                    {formatDistanceToNow(new Date(answer.created_at), {
-                      addSuffix: true,
-                    })}
-                  </Typography>
-                  <Typography variant="h5">{answer.content}</Typography>
+                  <Box>
+                    <Typography>{answer.content}</Typography>
+                  </Box>
                 </CardContent>
               </Card>
             </Box>
           ))}
         </CardContent>
+
         <CardActions>
           <TextField
             value={newAnswerContent}

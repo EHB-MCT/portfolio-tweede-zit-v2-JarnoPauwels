@@ -1,14 +1,14 @@
 import axios from "axios";
 
 const URL = "http://localhost:3000";
-// const userId = localStorage.getItem("userId");
+const userId = localStorage.getItem("userId");
 
 // Fetch User by ID
 export const fetchUserData = async (userId) => {
   try {
     const apiUrl = `${URL}/users/${userId}`;
     const response = await axios.get(apiUrl);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -64,6 +64,22 @@ export const fetchAnswersForQuestion = async (questionId) => {
     return answersWithUsers;
   } catch (error) {
     console.error("Error fetching answers:", error);
+    throw error;
+  }
+};
+
+// Post a new answer for a question
+export const postAnswer = async (questionId, content) => {
+  try {
+    const apiUrl = `${URL}/answers/question/${questionId}`;
+    const response = await axios.post(apiUrl, {
+      content,
+      user_id: userId,
+    });
+    // console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error posting answer:", error);
     throw error;
   }
 };

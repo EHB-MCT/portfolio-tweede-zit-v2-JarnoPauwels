@@ -78,9 +78,11 @@ function App() {
         <Box
           component="main"
           sx={{
-            flexGrow: 1,
+            // flexGrow: 1,
             width: "89vw",
+            // maxWidth: "89vw",
             p: 4,
+            overflow: "hidden",
           }}
         >
           <Routes>

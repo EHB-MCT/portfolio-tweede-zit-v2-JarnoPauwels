@@ -4,6 +4,7 @@ import {
   fetchQuestionById,
   fetchAnswersForQuestion,
   postAnswer,
+  markAnswerAsCorrect,
 } from "../service/dataService";
 import {
   Box,
@@ -29,6 +30,13 @@ const QuestionDetail = () => {
   const [question, setQuestion] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [newAnswerContent, setNewAnswerContent] = useState("");
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    setUserId(storedUserId);
+    fetchQuestion();
+  }, [questionId]);
 
   const fetchQuestion = async () => {
     try {
@@ -62,6 +70,15 @@ const QuestionDetail = () => {
       fetchQuestion();
     } catch (error) {
       console.error("Error posting answer:", error);
+    }
+  };
+
+  const handleMarkAsCorrect = async (answerId) => {
+    try {
+      await markAnswerAsCorrect(answerId);
+      fetchQuestion();
+    } catch (error) {
+      console.error("Error marking answer as correct:", error);
     }
   };
 
@@ -162,7 +179,16 @@ const QuestionDetail = () => {
                     {answer.isCorrectAnswer && (
                       <CheckIcon sx={{ justifyContent: "flex-end" }} />
                     )}
+                    {userId === question.user.id && !answer.isCorrectAnswer && (
+                      <Button
+                        size="small"
+                        onClick={() => handleMarkAsCorrect(answer.id)}
+                      >
+                        Mark as Correct
+                      </Button>
+                    )}
                   </Box>
+
                   <Box>
                     <Typography>{answer.content}</Typography>
                   </Box>

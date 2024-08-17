@@ -1,14 +1,15 @@
-require("dotenv").config({ path: "../../.env" });
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../../.env") });
 
 module.exports = {
   client: "pg",
-  connection: "postgres://postgres:bel6Chika@localhost:5432/dev5",
-  // connection: {
-  //   host: process.env.DB_HOST,
-  //   user: process.env.DB_USER,
-  //   password: process.env.DB_PASSWORD,
-  //   database: process.env.DB_DATABASE,
-  // },
+  connection: {
+    host: process.env.POSTGRES_HOST,
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    database: process.env.POSTGRES_DB,
+    port: process.env.POSTGRES_PORT,
+  },
   migrations: {
     tableName: "knex_migrations",
     directory: "./migrations",

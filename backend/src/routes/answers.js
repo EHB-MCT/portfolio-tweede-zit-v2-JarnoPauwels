@@ -45,6 +45,35 @@ router.post("/question/:question_id", async (req, res) => {
 });
 
 /**
+ * Mark an answer as correct.
+ * @route POST /questions/{question_id}/answers/{answer_id}/correct
+ * @param {string} question_id.path - Question ID
+ * @param {string} answer_id.path - Answer ID
+ * @returns {object} - Updated answer object
+ */
+router.post("/:answer_id/correct", async (req, res) => {
+  const { answer_id } = req.params;
+
+  try {
+    const [updatedAnswer] = await knex.transaction(async (trx) => {
+      return trx("answers")
+        .where({ id: answer_id })
+        .update({ isCorrectAnswer: true })
+        .returning("*");
+    });
+
+    if (!updatedAnswer) {
+      return res.status(404).json({ message: "Answer not found" });
+    }
+
+    res.json(updatedAnswer);
+  } catch (error) {
+    console.error("Error marking answer as correct:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+/**
  * Delete an answer by ID.
  * @route DELETE /answers/{id}
  * @param {string} id.path - Answer ID

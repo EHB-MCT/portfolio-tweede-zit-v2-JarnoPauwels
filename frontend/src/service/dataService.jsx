@@ -83,3 +83,15 @@ export const postAnswer = async (questionId, content) => {
     throw error;
   }
 };
+
+export const markAnswerAsCorrect = async (answerId) => {
+  try {
+    const apiUrl = `${URL}/answers/${answerId}/correct`;
+    const response = await axios.post(apiUrl);
+    // console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error posting answer:", error);
+    throw error;
+  }
+};

@@ -45,7 +45,6 @@ const QuestionsAndAnswers = ({
             >
               <Box>
                 <Typography variant="h6">{question.title}</Typography>
-                <Typography variant="h6">{question.id}</Typography>
                 <Typography variant="body1" gutterBottom>
                   {question.content}
                 </Typography>
@@ -96,8 +95,6 @@ const QuestionsAndAnswers = ({
                     primary={answer.content}
                     secondary={`by ${answer.user.firstName} ${answer.user.lastName}`}
                   />
-                  <Typography variant="h6">{answer.id}</Typography>
-
                   <IconButton
                     aria-label="delete answer"
                     onClick={() =>

@@ -8,8 +8,6 @@ import {
 } from "../service/dataService";
 import {
   Box,
-  Skeleton,
-  Stack,
   Card,
   CardContent,
   CardActions,
@@ -34,6 +32,7 @@ const QuestionDetail = () => {
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
+    console.log(storedUserId);
     setUserId(storedUserId);
     fetchQuestion();
   }, [questionId]);
@@ -41,12 +40,9 @@ const QuestionDetail = () => {
   const fetchQuestion = async () => {
     try {
       const questionData = await fetchQuestionById(questionId);
-      // console.log(questionData);
       setQuestion(questionData);
 
       let answerData = await fetchAnswersForQuestion(questionId);
-      console.log(answerData);
-
       answerData = answerData.sort((a, b) => {
         if (a.isCorrectAnswer && !b.isCorrectAnswer) return -1;
         if (!a.isCorrectAnswer && b.isCorrectAnswer) return 1;
@@ -59,13 +55,10 @@ const QuestionDetail = () => {
     }
   };
 
-  useEffect(() => {
-    fetchQuestion();
-  }, [questionId]);
-
   const handlePostAnswer = async () => {
+    if (newAnswerContent.trim() === "") return; // Prevent posting empty answers
     try {
-      await postAnswer(question.id, newAnswerContent);
+      await postAnswer(question.id, newAnswerContent, userId);
       setNewAnswerContent("");
       fetchQuestion();
     } catch (error) {
@@ -128,7 +121,6 @@ const QuestionDetail = () => {
               icon={getRoleIcon(question.user.role)}
               label={question.user.role}
               size="small"
-              // variant="outlined"
               color={getRoleColor(question.user.role)}
             />
           </Box>
@@ -146,22 +138,10 @@ const QuestionDetail = () => {
         <CardContent>
           <Typography variant="h6">Answers:</Typography>
           {answers.map((answer) => (
-            <Box key={answer.id}>
-              <Card
-                variant="outlined"
-                sx={{
-                  marginBottom: 1,
-                }}
-              >
+            <Box key={answer.id} sx={{ mb: 1 }}>
+              <Card variant="outlined">
                 <CardContent>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 1,
-                      marginBottom: 1,
-                    }}
-                  >
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <Typography variant="h6" color="text.secondary">
                       {answer.user.firstName} {answer.user.lastName}
                     </Typography>
@@ -188,10 +168,7 @@ const QuestionDetail = () => {
                       </Button>
                     )}
                   </Box>
-
-                  <Box>
-                    <Typography>{answer.content}</Typography>
-                  </Box>
+                  <Typography>{answer.content}</Typography>
                 </CardContent>
               </Card>
             </Box>
@@ -207,7 +184,11 @@ const QuestionDetail = () => {
             size="small"
             fullWidth
           />
-          <Button size="small" onClick={handlePostAnswer}>
+          <Button
+            size="small"
+            onClick={handlePostAnswer}
+            disabled={!newAnswerContent.trim()}
+          >
             Post Answer
           </Button>
         </CardActions>

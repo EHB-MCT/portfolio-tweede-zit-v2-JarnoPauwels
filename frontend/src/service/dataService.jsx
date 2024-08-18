@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const URL = "http://localhost:3000";
-const userId = localStorage.getItem("userId");
 
 // Fetch User by ID
 export const fetchUserData = async (userId) => {
@@ -69,7 +68,7 @@ export const fetchAnswersForQuestion = async (questionId) => {
 };
 
 // Post a new answer for a question
-export const postAnswer = async (questionId, content) => {
+export const postAnswer = async (questionId, content, userId) => {
   try {
     const apiUrl = `${URL}/answers/question/${questionId}`;
     const response = await axios.post(apiUrl, {

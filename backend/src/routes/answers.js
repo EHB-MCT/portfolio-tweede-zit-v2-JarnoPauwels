@@ -46,7 +46,7 @@ router.post("/question/:question_id", async (req, res) => {
 
 /**
  * Mark an answer as correct.
- * @route POST /questions/{question_id}/answers/{answer_id}/correct
+ * @route POST /answers/{answer_id}/correct
  * @param {string} question_id.path - Question ID
  * @param {string} answer_id.path - Answer ID
  * @returns {object} - Updated answer object
@@ -74,15 +74,22 @@ router.post("/:answer_id/correct", async (req, res) => {
 });
 
 /**
- * Delete an answer by ID.
- * @route DELETE /answers/{id}
- * @param {string} id.path - Answer ID
+ * Delete an answer by its ID and question ID.
+ * @route DELETE /answers/{answer_id}
+ * @param {string} question_id.path - Question ID
+ * @param {string} answer_id.path - Answer ID
  * @returns {void}
  */
-router.delete("/:id", async (req, res) => {
-  const { id } = req.params;
-  await knex("answers").where({ id }).del();
-  res.sendStatus(204);
+router.delete("/:answer_id", async (req, res) => {
+  const { answer_id } = req.params;
+
+  try {
+    await knex("answers").where({ id: answer_id }).del();
+    res.sendStatus(204); // No content, deletion successful
+  } catch (error) {
+    console.error("Error deleting answer:", error);
+    res.sendStatus(500); // Internal server error
+  }
 });
 
 module.exports = router;

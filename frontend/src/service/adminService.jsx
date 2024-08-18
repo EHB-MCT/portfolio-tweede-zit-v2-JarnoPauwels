@@ -36,3 +36,25 @@ export const deleteUser = async (userId) => {
     throw error;
   }
 };
+
+// Delete a question by ID
+export const deleteQuestion = async (questionId) => {
+  try {
+    const apiUrl = `${URL}/questions/${questionId}`;
+    await axios.delete(apiUrl);
+  } catch (error) {
+    console.error("Error deleting question:", error);
+    throw error;
+  }
+};
+
+// Delete an answer by ID
+export const deleteAnswer = async (answerId) => {
+  try {
+    const apiUrl = `${URL}/answers/${answerId}`;
+    await axios.delete(apiUrl);
+  } catch (error) {
+    console.error("Error deleting answer:", error);
+    throw error;
+  }
+};

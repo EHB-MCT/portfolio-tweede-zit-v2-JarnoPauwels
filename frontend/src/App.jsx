@@ -11,6 +11,7 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import Questions from "./components/Questions";
 import QuestionDetail from "./components/QuestionDetail";
+import AdminDashboard from "./components/admin/AdminDashboard";
 import { fetchUserData } from "./service/dataService";
 import lightLogo from "./assets/EhB-logo-transparant.png";
 import darkLogo from "./assets/EhB logo rood en wit.png";
@@ -46,6 +47,7 @@ function App() {
   const fetchUser = async (userId) => {
     try {
       const userData = await fetchUserData(userId);
+      setUserRole(userData.role);
     } catch (error) {
       console.error("Error fetching user data:", error);
     } finally {
@@ -102,6 +104,11 @@ function App() {
                   path="/question/:questionId"
                   element={<QuestionDetail />}
                 />
+                {userRole === "admin" ? (
+                  <Route path="/admin" element={<AdminDashboard />} />
+                ) : (
+                  <Route path="/admin" element={<Navigate to="/" replace />} />
+                )}
               </>
             )}
           </Routes>

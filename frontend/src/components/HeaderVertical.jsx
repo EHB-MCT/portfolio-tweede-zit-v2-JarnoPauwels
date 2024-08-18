@@ -4,6 +4,7 @@ import { Box, Typography, Button } from "@mui/material";
 import { styled } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
 import { useThemeToggle } from "../utils/ThemeContext";
+import CustomSwitch from "./CustomSwitch";
 
 const HeaderContainer = styled(Box)(({ theme }) => ({
   position: "fixed",
@@ -83,6 +84,8 @@ const Header = ({ lightModeImageUrl, darkModeImageUrl, title, isAdmin }) => {
         onClick={handleLogoClick}
       />
       <Title variant="h6">{title}</Title>
+
+      <CustomSwitch />
 
       <LogoutButton variant="contained" color="primary" onClick={handleLogout}>
         Logout
